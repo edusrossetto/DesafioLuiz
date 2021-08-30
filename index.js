@@ -21,15 +21,15 @@ function showAlert(type, text) {
 }
 
 function getAlunosFromService() {
-
     axios.get(endpointURL)
-    .then(data => {
-        alunos = data.data
+    .then(response => {
+        alunos = response.data
         updateAlunosList(self.alunos)
     })
     .catch(err => {
         showAlert("danger", err)
     })
+    console.log("teste")
 }
 
 function createNewAluno(data) {
@@ -59,10 +59,35 @@ function updateAlunosList(alunos) {
     let list = document.getElementById("items")
     var alunoEntries = ""
     alunos.forEach(aluno => {
-        alunoEntries += `<tr><td>${aluno.first_name}</td><td>${aluno.last_name}</td><td>${aluno.email}</td><td>${aluno.phone}</td><td><button class="btn" onClick="editAluno(${aluno.id})">Editar</button></td></tr>`
+        alunoEntries += `<tr><td>${aluno.first_name}</td><td>${aluno.last_name}</td><td>${aluno.email}</td><td>${aluno.phone}</td><td><button class="btn" onClick="editAluno(${aluno.id})">Editar</button></td><td><button onClick="apagaAluno(${aluno.id})">Apagar</button></td><td><button onClick="alertaAluno(${aluno.id})">Alerta!</button></td></tr>`
     });
 
     list.innerHTML = alunoEntries
+}
+
+function alertaAluno(alunoId) {
+    console.log(alunoId)
+    let alunoFiltrados = alunos.filter(aluno => aluno.id == alunoId)
+    let aluno = alunoFiltrados[0]
+    alert(`${aluno.first_name} ${aluno.last_name}`);
+}
+
+function apagaAluno(idAluno) {
+
+    var resultado = axios.delete(`${endpointURL}/${idAluno}`)
+
+    resultado.then(response => {
+        console.log(response)
+        if(response.data.error) {
+            showAlert("warning", "Deu xablau")
+        } else {
+            console.log(response)
+            showAlert("success", response.data.message)
+            getAlunosFromService()
+        
+        }
+    })
+    
 }
 
 function editAluno(idAluno) {
@@ -105,12 +130,23 @@ function submitAlunoEdit() {
 
 }
 
+function exemplo(cond, callback) {
+    if(cond){ 
+        callback()
+    }
+}
+
 function clickLimpar() {
     console.log('limpa')
     clearCampos()
     let limparBtn = document.getElementById("limpar")
     limparBtn.hidden = true
+    exemplo(false, function() {
+        console.log("teste")
+    })
 }
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
 
