@@ -20,45 +20,23 @@ function showAlert(type, text) {
     alertPlaceholder.append(wrapper)
 }
 
-function getAlunosFromService() {
-    axios.get(endpointURL)
-    .then(response => {
-        alunos = response.data
-        updateAlunosList(self.alunos)
-    })
-    .catch(err => {
-        showAlert("danger", err)
-    })
-    console.log("teste")
-}
 
 function createNewAluno(data) {
-    axios.post(endpointURL, data)
-    .then(response => {
-        showAlert("success", `Aluno adicionado com sucesso`)
-        getAlunosFromService()
-    })
-    .catch(err => {
-        showAlert("danger", err)
-    })
+    self.alunos.push(data)
+    showAlert("success", `Aluno adicionado com sucesso`)
 }
 
 function updateAluno(data) {
-    axios.put(`${endpointURL}/${self.editedAlunoId}`, data)
-    .then(response => {
-        console.log(response)
-        showAlert("success", `Aluno editado com sucesso`)
-        getAlunosFromService()
-    })
-    .catch(err => {
-        showAlert("danger", err)
-    })
+    apagaAluno(data.id)
+    self.alunos.push(data)
+    showAlert("success", `Aluno alterado com sucesso`)
+    updateAlunosList()
 }
 
-function updateAlunosList(alunos) {
+function updateAlunosList() {
     let list = document.getElementById("items")
     var alunoEntries = ""
-    alunos.forEach(aluno => {
+    self.alunos.forEach(aluno => {
         alunoEntries += `<tr><td>${aluno.first_name}</td><td>${aluno.last_name}</td><td>${aluno.email}</td><td>${aluno.phone}</td><td><button class="btn" onClick="editAluno(${aluno.id})">Editar</button></td><td><button onClick="apagaAluno(${aluno.id})">Apagar</button></td><td><button onClick="alertaAluno(${aluno.id})">Alerta!</button></td></tr>`
     });
 
@@ -73,21 +51,9 @@ function alertaAluno(alunoId) {
 }
 
 function apagaAluno(idAluno) {
-
-    var resultado = axios.delete(`${endpointURL}/${idAluno}`)
-
-    resultado.then(response => {
-        console.log(response)
-        if(response.data.error) {
-            showAlert("warning", "Deu xablau")
-        } else {
-            console.log(response)
-            showAlert("success", response.data.message)
-            getAlunosFromService()
-        
-        }
-    })
-    
+    var newAlunos = self.alunos.filter(aluno => aluno.id != idAluno)
+    self.alunos = newAlunos
+    updateAlunosList()
 }
 
 function editAluno(idAluno) {
@@ -119,12 +85,21 @@ function clearCampos() {
 
 function addAluno() {
     let infoNewAluno = getCampos()
+    infoNewAluno.id = getRandomInt(1,100000)
     clearCampos()
     createNewAluno(infoNewAluno)
+    updateAlunosList()
 }
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
 
 function submitAlunoEdit() {
     var editedAluno = getCampos()
+    editedAluno.id = self.editedAlunoId
     updateAluno(editedAluno)
     clearCampos()
 
@@ -149,8 +124,7 @@ function clickLimpar() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
-    getAlunosFromService()
+    updateAlunosList(self.alunos)
     let createButton = document.getElementById("criarAlunoBtn")
     createButton.addEventListener('click', () => {
         addAluno()
