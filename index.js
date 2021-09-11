@@ -12,12 +12,30 @@ var alunoFields = {
 
 let endpointURL = "http://172.16.48.54:5000/api/alunos"
 
+
 function showAlert(type, text) {
+    
     var alertPlaceholder = document.getElementById("alertPlaceholder")
     var wrapper = document.createElement('div')
-    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + text + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+    
+    wrapper.innerHTML = '<div class="alert alert-'
+     + type + 
+     ' alert-dismissible" role="alert">'
+    + text + 
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
   
     alertPlaceholder.append(wrapper)
+
+    setTimeout(function(){
+        wrapper.innerHTML = '<div class="alert alert-'
+        + type + 
+        ' alert-dismissible" role="alert">'
+         + text + 
+         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+         alertPlaceholder.removeChild(wrapper)
+
+    },1500);
 }
 
 
@@ -37,7 +55,17 @@ function updateAlunosList() {
     let list = document.getElementById("items")
     var alunoEntries = ""
     self.alunos.forEach(aluno => {
-        alunoEntries += `<tr><td>${aluno.first_name}</td><td>${aluno.last_name}</td><td>${aluno.email}</td><td>${aluno.phone}</td><td><button class="btn" onClick="editAluno(${aluno.id})">Editar</button></td><td><button onClick="apagaAluno(${aluno.id})">Apagar</button></td><td><button onClick="alertaAluno(${aluno.id})">Alerta!</button></td></tr>`
+        alunoEntries += `<tr>
+        <td>${aluno.first_name}</td>
+        <td>${aluno.last_name}</td>
+        <td>${aluno.email}</td>
+        <td>${aluno.phone}</td>
+        <a href="http://allisondskinner.com">
+        <td><button class="btn" onClick="editAluno(${aluno.id})">Editar</button></td>
+        <td><button class="btn" onClick="apagaAluno(${aluno.id})">Apagar</button></td>
+        <td><button class="btn" onClick="alertaAluno(${aluno.id})">Alerta!</button></td>
+        </a>
+        </tr>`
     });
 
     list.innerHTML = alunoEntries
@@ -84,17 +112,22 @@ function clearCampos() {
 }
 
 function addAluno() {
+    if(valida(alunoFields)== true){
     let infoNewAluno = getCampos()
     infoNewAluno.id = getRandomInt(1,100000)
     clearCampos()
     createNewAluno(infoNewAluno)
-    updateAlunosList()
+    updateAlunosList()}
 }
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+function hasNumber(myString) {
+    return /\d/.test(myString);
   }
 
 function submitAlunoEdit() {
@@ -104,6 +137,7 @@ function submitAlunoEdit() {
     clearCampos()
 
 }
+
 
 function exemplo(cond, callback) {
     if(cond){ 
@@ -120,6 +154,47 @@ function clickLimpar() {
         console.log("teste")
     })
 }
+function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+function validatePhone(phone) {
+        var rex = /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/;
+        return rex.test(phone);
+    }
+
+    
+
+    
+
+
+function valida(alunoFields){
+    var nomev = alunoFields.name.value
+    var sobrev = alunoFields.lastName.value
+    var emailv = alunoFields.email.value
+    var telv = alunoFields.phone.value
+
+    if (nomev == '' || hasNumber(nomev) || String(nomev).length>16 || String(nomev).length<2){
+        showAlert('warning', "Nome inválido")
+        
+        return false;
+    } else if(sobrev == '' || hasNumber(sobrev) || String(sobrev).length>16 || String(sobrev).length<2){
+        showAlert('warning', "Sobrenome inválido")
+
+    } else if(!validateEmail(emailv)){
+        
+        showAlert('warning', "Email inválido")
+
+    }else if(!validatePhone(telv)){
+        showAlert('warning', "Telefone inválido")
+
+    }
+    else{
+        console.log(emailv)
+        return true}
+
+}
+
 
 
 
@@ -142,4 +217,5 @@ document.addEventListener("DOMContentLoaded", function() {
             submitAlunoEdit()
         }
     })
-});
+}
+);
