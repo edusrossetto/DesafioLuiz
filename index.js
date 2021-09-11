@@ -27,12 +27,6 @@ function showAlert(type, text) {
     alertPlaceholder.append(wrapper)
 
     setTimeout(function(){
-        wrapper.innerHTML = '<div class="alert alert-'
-        + type + 
-        ' alert-dismissible" role="alert">'
-         + text + 
-         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
          alertPlaceholder.removeChild(wrapper)
 
     },1500);
@@ -45,10 +39,12 @@ function createNewAluno(data) {
 }
 
 function updateAluno(data) {
+    if(valida(alunoFields)){
     apagaAluno(data.id)
     self.alunos.push(data)
     showAlert("success", `Aluno alterado com sucesso`)
     updateAlunosList()
+    }
 }
 
 function updateAlunosList() {
@@ -75,7 +71,8 @@ function alertaAluno(alunoId) {
     console.log(alunoId)
     let alunoFiltrados = alunos.filter(aluno => aluno.id == alunoId)
     let aluno = alunoFiltrados[0]
-    alert(`${aluno.first_name} ${aluno.last_name}`);
+    alert(`${aluno.first_name} ${aluno.last_name}`)
+    showAlert("warning", `União Flasco`);
 }
 
 function apagaAluno(idAluno) {
