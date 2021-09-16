@@ -28,18 +28,24 @@ function updateAlunosList() {
     let list = document.getElementById("items")
     var alunoEntries = ""
     self.alunos.forEach(aluno => {
-        alunoEntries += `<tr>
+        alunoEntries += `<hr>
+        <tr class="elementosx">
         <td>${aluno.first_name}</td>
         <td>${aluno.last_name}</td>
         <td>${aluno.email}</td>
-        <td>${aluno.phone}</td>
-        <a href="http://allisondskinner.com">
-        <td><button class="btn1 btnText" onClick="editAluno(${aluno.id})">Editar</button></td>
-        <td><button class="btn1 btnText crimson" onClick="apagaAluno(${aluno.id});alertDelet()">Apagar</button></td>
-        <td><button class="btn1 btnText yellow" onClick="alertaAluno(${aluno.id})">Alerta!</button></td>
-        </a>
-        </tr>`
+        <td class="phones">${aluno.phone}</td>
+        <td><button class="btnf" onClick="editAluno(${aluno.id})">Editar</button>
+        <button class="btnf" onClick="apagaAluno(${aluno.id})">Apagar</button>
+        <button class="btnf" onClick="alertaAluno(${aluno.id})">Alerta!</button></td>
+        
+        </tr>
+        
+        `
     });
+    if (alunos==0){
+        let container2 = document.getElementById("AlunosRegistrados")
+        container2.classList.remove("extended")
+    }
 
     list.innerHTML = alunoEntries
 }
@@ -64,8 +70,8 @@ function editAluno(idAluno) {
     var botao = document.getElementById('criarAlunoBtn')
     botao.classList.add("invisivel")
  
-    let limparBtn = document.getElementById("limpar")
-    limparBtn.hidden = false
+    // let limparBtn = document.getElementById("limpar")
+    // limparBtn.hidden = false
     self.editedAlunoId = idAluno
     let aluno = alunos.filter(aluno => aluno.id == idAluno)[0]
     setCampos(aluno)
@@ -75,9 +81,11 @@ function editAluno(idAluno) {
 
 function addAluno() {
     if(valida(alunoFields)){
+    container2 = document.getElementById("AlunosRegistrados")
     let infoNewAluno = getCampos()
     infoNewAluno.id = getRandomInt(1,100000)
     clearCampos()
+    container2.classList.add("extended")
     createNewAluno(infoNewAluno)
     updateAlunosList()}
 }
@@ -102,21 +110,25 @@ function exemplo(cond, callback) {
 document.addEventListener("DOMContentLoaded", function() {
     updateAlunosList(self.alunos)
     let createButton = document.getElementById("criarAlunoBtn")
-    createButton.addEventListener('click', () => {
+    
+    createButton.addEventListener('click', () => {  
         addAluno()
     })
 
     let editButton = document.getElementById("editarAlunoBtn")
-    let limparBtn = document.getElementById("limpar")
-    limparBtn.hidden = true
-    limparBtn.addEventListener('click', clickLimpar)
+
+    // let limparBtn = document.getElementById("limpar")
+    // limparBtn.hidden = true
+    // limparBtn.addEventListener('click', clickLimpar)
+    
     editButton.addEventListener('click', () => {
         if(self.editedAlunoId == 0) {
             showAlert('warning', "Favor selecionar um aluno")
         } else {
-            limparBtn.hidden = true
+            // limparBtn.hidden = true
             submitAlunoEdit()
         }
     })
+
 }
 );

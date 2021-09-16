@@ -13,11 +13,11 @@ var sobrev = alunoFields.lastName.value
 var emailv = alunoFields.email.value
 var telv = alunoFields.phone.value
 
-if (nomev == '' || hasNumber(nomev) || String(nomev).length>16 || String(nomev).length<2){
+if (hasNumber(nomev) || String(nomev).length>11 || String(nomev).length<2){
     showAlert('warning', "Nome inválido")
     
     return false;
-} else if(sobrev == '' || hasNumber(sobrev) || String(sobrev).length>16 || String(sobrev).length<2){
+} else if(hasNumber(sobrev) || String(sobrev).length>11 || String(sobrev).length<2 && String(sobrev).length<2){
     showAlert('warning', "Sobrenome inválido")
 
 } else if(!validateEmail(emailv)){

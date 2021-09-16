@@ -6,7 +6,11 @@ var alunoFields = {
 }
 
 function getCampos() {
-    return {first_name: alunoFields.name.value, phone: alunoFields.phone.value, last_name: alunoFields.lastName.value, email: alunoFields.email.value}
+    return {
+        first_name: alunoFields.name.value,
+        phone: alunoFields.phone.value,
+        last_name: alunoFields.lastName.value,
+        email: alunoFields.email.value}
 }
 
 function clearCampos() {
