@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>DesafioLuiz</title>
     <link rel="stylesheet" href="style.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 </head>
 <script>
     $(document).ready(function () {
-      console.log('coming in');
-          $('#telefoneNewAluno').mask('(00) 00000-0000');  
-        })
-  </script>
+        console.log('coming in');
+        $('#telefoneNewAluno').mask('(00) 00000-0000');
+    })
+</script>
+
 <body>
     <div class="container" id="formRegistro">
         <div class="title">Alunos</div>
-        <form  action="#">
+        <form action="#">
             <div class="user-details">
                 <div class="input-box">
                     <span class="details">Nome</span>
@@ -39,7 +41,7 @@
                     <span class="details">Telefone</span>
                     <input type="text" id="telefoneNewAluno" placeholder="Digite o telefone" required>
                 </div>
-                
+
             </div>
             <div class="button">
                 <input type="submit" id="criarAlunoBtn" value="Registrar aluno">
@@ -47,9 +49,9 @@
             <div class="button">
                 <input type="submit" id="editarAlunoBtn" value="Editar aluno">
             </div>
-            
-        
-        </form>      
+
+
+        </form>
     </div>
     <div class="container2" id="AlunosRegistrados">
         <table>
@@ -61,17 +63,17 @@
         </table>
         <div class="essa">
             <table class="table zuado">
-            
 
-                <tbody class="dados"id="items"></tbody>
-                
+
+                <tbody class="dados" id="items"></tbody>
+
             </table>
-            
+
         </div>
-        
-    
+
+
     </div>
-    
+
     <script src="js/alerts.js"></script>
     <script src="js/alunos.js"></script>
     <script src="js/forms.js"></script>
